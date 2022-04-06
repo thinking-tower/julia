@@ -1976,3 +1976,9 @@ end
 @testintersect(Tuple{Type{Pair{_A, S} where S<:AbstractArray{<:_A, 2}}, Dict} where _A,
                Tuple{Type{Pair{_A, S} where S<:AbstractArray{<:_A, 2}} where _A, Union{Array, Pair}},
                Bottom)
+
+# https://github.com/JuliaLang/julia/issues/44735
+@test_throws TypeError(:typeintersect, Type, Core.TypeofVararg) typeintersect(Vararg{Int}, Int)
+@test_throws TypeError(:typeintersect, Type, Core.TypeofVararg) typeintersect(Int, Vararg{Int})
+@test_throws TypeError(:typeintersect, Type, Int) typeintersect(1, Int)
+@test_throws TypeError(:typeintersect, Type, Int) typeintersect(Int, 1)
