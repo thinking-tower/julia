@@ -23,18 +23,18 @@ function _readkey(stream::IO=stdin)
 
     # Escape characters
     if c == '\x1b'
-        bytesavailable(stream) < 2 && return '\x1b'
+        bytesavailable(stream) < 1 && return '\x1b'
         esc_a = readbyte(stream)
         esc_a == 'v' && return PAGE_UP  # M-v
         esc_a == '<' && return HOME_KEY # M-<
         esc_a == '>' && return END_KEY  # M->
 
-        bytesavailable(stream) < 3 && return '\x1b'
+        bytesavailable(stream) < 1 && return '\x1b'
         esc_b = readbyte(stream)
 
         if esc_a == '[' || esc_a == 'O'
             if esc_b >= '0' && esc_b <= '9'
-                bytesavailable(stream) < 4 && return '\x1b'
+                bytesavailable(stream) < 1 && return '\x1b'
                 esc_c = readbyte(stream)
                 if esc_c == '~'
                     esc_b == '1' && return HOME_KEY
